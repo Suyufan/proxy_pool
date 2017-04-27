@@ -2,6 +2,10 @@ import requests
 from time import sleep
 from lxml import etree
 
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
 
 def getHTMLTree(url):
     header = {
@@ -21,3 +25,27 @@ def getHTMLTree(url):
     HTMLTree = etree.HTML(html)
     return HTMLTree
 
+
+def checkProxy(proxy):
+    if "https" in proxy:
+        proxies = {
+            "https": proxy,
+        }
+    else :
+        proxies = {
+            "http": proxy,
+        }
+
+    r = requests.get('http://www.tianyancha.com/', proxies=proxies, timeout=10, verify=False)
+
+    try:
+        if r.status_code == 200:
+            print("%s is ok" % proxy)
+            return True
+    except Exception as e:
+        print(e)
+        print("%s is wrong" % proxy)
+        return False
+
+if __name__ == "__main__":
+    print(checkProxy("http://218.64.93.15:808"))
