@@ -36,16 +36,14 @@ def checkProxy(proxy):
             "http": proxy,
         }
 
-    r = requests.get('http://www.tianyancha.com/', proxies=proxies, timeout=10, verify=False)
-
     try:
+        r = requests.get('http://www.tianyancha.com/', proxies=proxies, timeout=5, verify=False)
         if r.status_code == 200:
-            print("%s is ok" % proxy)
             return True
+
     except Exception as e:
         print(e)
-        print("%s is wrong" % proxy)
         return False
 
 if __name__ == "__main__":
-    print(checkProxy("http://218.64.93.15:808"))
+    print(checkProxy("https://208.92.94.142:1080"))

@@ -15,7 +15,10 @@ class RedisClient(object):
         return self.conn.sadd(self.name, value)
 
     def pop(self):
-        return self.conn.spop(self.name).decode('utf-8')
+        if self.conn.scard(self.name) == 0:
+            return None
+        else:
+            self.conn.spop(self.name).decode('utf-8')
 
     def delete(self, value):
         self.conn.srem(self.name, value)
